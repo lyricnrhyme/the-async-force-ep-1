@@ -40,21 +40,29 @@ starWars.send();
 let swFilms = new XMLHttpRequest();
 swFilms.addEventListener("load", function(req) {
     for (let i=0; i<JSON.parse(req.currentTarget.response).results.length; i++) {
-        let makeLi = document.createElement("li");
-        makeLi.className = "film";
-        document.body.appendChild(makeLi);
-
-        let filmTitle = document.createElement("h2");
+        let filmTitle = document.createElement("li");
         filmTitle.className = "filmTitle";
         filmTitle.innerHTML = "Episode: " + JSON.parse(req.currentTarget.response).results[i].title;
-        makeLi.appendChild(filmTitle);
+        document.body.appendChild(filmTitle);
 
-        for (let j=0; j<JSON.parse(req.currentTarget.response).results[i].planets.length; j++) {
-            console.log(j + "test");
+        let filmPlanets = document.createElement("ul");
+        filmPlanets.className = "filmPlanets";
+        filmPlanets.innerHTML = "Planets: "
+        filmTitle.appendChild(filmPlanets);
+
+        for (let j=0; j<JSON.parse(req.currentTarget.response).results[i].planets.length; j++) {            
+            let planetsLink = JSON.parse(req.currentTarget.response).results[i].planets[j];
+            planet = new XMLHttpRequest();
+            planet.addEventListener("load", function(req) {
+                let planetName = document.createElement("li");
+                planetName.className = "planetName";
+                planetName.innerHTML = JSON.parse(req.currentTarget.response).name;
+                filmPlanets.appendChild(planetName);
+            })
+            planet.open("GET", planetsLink);
+            planet.send();
         }
     }
 })
 swFilms.open("GET", "https://swapi.co/api/films/");
 swFilms.send();
-//           - create a new `<li>` in this film's `filmPlanets` for each `planet` that appeared in this `film`
-//               - fill in each `planetTitle` with the name of the `planet`
