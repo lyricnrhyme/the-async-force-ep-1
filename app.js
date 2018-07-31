@@ -37,6 +37,7 @@ starWars.addEventListener("load", function() {
 starWars.open("GET", "https://swapi.co/api/people/");
 starWars.send();
 
+//FILMS
 let swFilms = new XMLHttpRequest();
 swFilms.addEventListener("load", function(req) {
     for (let i=0; i<JSON.parse(req.currentTarget.response).results.length; i++) {
